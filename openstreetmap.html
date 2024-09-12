@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Address from Coordinates</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map { height: 400px; }
+    </style>
+</head>
+<body>
+    <h1>Address from Coordinates</h1>
+    <div id="map"></div>
+    <div id="address"></div>
+    
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        async function getAddressFromCoordinates(lat, lon) {
+            const apiKey = 'ktig9SEFzgP7h-t30PantuUrkvHEwNCdoVh4nhgRjq4'; 
+            const baseUrl = 'http://127.0.0.1:8000/api/.openstreetmap.org/reverse';
+            const urlParams = new URLSearchParams({
+                lat: lat,
+                lon: lon,
+                format: 'json',
+                addressdetails: 1
+            });
+
+            const response = await fetch(`${baseUrl}?${urlParams}`);
+            const data = await response.json();
+
+            return data.address ? `${data.address.road || ''}, ${data.address.city || ''}, ${data.address.country || ''}` : 'Address not found';
+        }
+
+        function initMap(lat, lon) {
+            const map = L.map('map').setView([lat, lon], 15);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            L.marker([lat, lon]).addTo(map);
+        }
+
+        async function main() {
+            const latitude = -1.287109128306085;
+            const longitude = 36.81116412027393;
+            
+            // Initialize the map
+            initMap(latitude, longitude);
+            
+            // Get address from coordinates
+            const address = await getAddressFromCoordinates(latitude, longitude);
+            document.getElementById('address').innerText = `Address: ${address}`;
+        }
+        
+
+
+        main();
+    </script>
+    <div>
+        Thiis is just a sample method that we are using to test the location
+    </div>
+</body>
+</html>

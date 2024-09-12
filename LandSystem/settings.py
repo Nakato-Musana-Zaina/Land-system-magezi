@@ -10,11 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+from decouple import config
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -37,6 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'landDetails',
+    'registration',
+    'api',
+    'landDocument',
+   
+
 ]
 
 MIDDLEWARE = [
@@ -66,6 +75,10 @@ TEMPLATES = [
         },
     },
 ]
+
+
+
+GOOGLE_APPLICATION_CREDENTIALS = config('/home/studen/Documents/LandSystem-5ed998c85123.json', default=None)
 
 WSGI_APPLICATION = 'LandSystem.wsgi.application'
 
@@ -121,3 +134,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+OPENSTREETMAP_API_TOKEN = 'ktig9SEFzgP7h-t30PantuUrkvHEwNCdoVh4nhgRjq4'
+
+AUTH_USER_MODEL = 'registration.CustomUser'
